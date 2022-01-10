@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">User Profile</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="title_activity_main">MainActivity</string>
+</resources>
