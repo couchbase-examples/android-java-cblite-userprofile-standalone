@@ -1,0 +1,71 @@
+# docs taken from:  https://medium.com/google-developer-experts/github-actions-for-android-developers-6b54c8a32f55
+# name of workfow
+name: Build Standalone
+# Trigger
+on: 
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - name: Update using apt
+        run: | 
+          apt update || echo 'apt-update failed' # && apt -y upgrade
+      - name: Use Node.Js ${{matrix.node-version}} 
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{matrix.node-version}} 
+      - name: Install app-center cli with NodeJS
+        run: | 
+          npm install -g appcenter-cli
+      - name: Checkout the code
+        uses: actions/checkout@v2.3.3
+      - name: Setup JDK environment
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - name: Update Version of app
+        uses: chkfung/android-version-actions@v1.1
+        with:
+          gradlePath: ./standalone/app/build.gradle
+          versionCode: ${{github.run_number}} 
+          versionName: 1.0.${{github.run_number}} 
+      - name: Build the app
+        uses: eskatos/gradle-command-action@v1
+        with: 
+          build-root-directory: ./standalone/
+          wrapper-directory: ./standalone/
+          arguments: assembleDebug assembleAndroidTest
+      - name: Sign Artifact App
+        id: sign_app 
+        uses: r0adkll/sign-android-release@v1 
+        with: 
+          releaseDirectory: standalone/app/build/outputs/apk/debug
+          signingKeyBase64: ${{secrets.SIGNING_KEY_BASE64}} 
+          alias: ${{secrets.ALIAS}} 
+          keyStorePassword: ${{secrets.KEYSTORE_PASSWORD}} 
+          keyPassword: ${{secrets.KEY_PASSWORD}} 
+      - name: Upload artifact to App Center for Testing 
+        run: | 
+          appcenter distribute release --token "${{secrets.APPCENTER_API_KEY}}"  --app "Couchbase-Inc./UserProfile-Standalone-Android" --group "Collaborators" --file "${{steps.sign_app.outputs.signedReleaseFile}}" --silent --debug --release-notes "${{ github.event.head_commit.message }}"
+      - name: Sign Test Artifact App
+        id: sign_app_uitest
+        uses: r0adkll/sign-android-release@v1 
+        with: 
+          releaseDirectory: standalone/app/build/outputs/apk/androidTest/debug
+          signingKeyBase64: ${{secrets.SIGNING_KEY_BASE64}} 
+          alias: ${{secrets.ALIAS}} 
+          keyStorePassword: ${{secrets.KEYSTORE_PASSWORD}} 
+          keyPassword: ${{secrets.KEY_PASSWORD}} 
+      - name: Run UI Tests in App Center
+        run: | 
+          rm standalone/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+          mv standalone/app/build/outputs/apk/androidTest/debug/app-debug-androidTest-signed.apk standalone/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+          appcenter test run espresso --token "${{secrets.APPCENTER_API_KEY}}" --app "Couchbase-Inc./UserProfile-Standalone-Android" --devices cbc1464e --app-path "standalone/app/build/outputs/apk/debug/app-debug-signed.apk" --test-series "userprofile-standalone" --locale "en_US" --build-dir "standalone/app/build/outputs/apk/androidTest/debug" 
+          appcenter test run espresso --token "${{secrets.APPCENTER_API_KEY}}" --app "Couchbase-Inc./UserProfile-Standalone-Android" --devices 84a3abc4 --app-path "standalone/app/build/outputs/apk/debug/app-debug-signed.apk" --test-series "userprofile-standalone" --locale "en_US" --build-dir "standalone/app/build/outputs/apk/androidTest/debug" 
