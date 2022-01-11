@@ -49,7 +49,7 @@ jobs:
         with: 
           releaseDirectory: src/app/build/outputs/apk/debug
           signingKeyBase64: ${{secrets.SIGNING_KEY_BASE64}} 
-          alias: ${{secrets.ALIAS}} 
+          alias: ${{secrets.KEYSTORE_ALIAS}} 
           keyStorePassword: ${{secrets.KEYSTORE_PASSWORD}} 
           keyPassword: ${{secrets.KEY_PASSWORD}} 
       - name: Upload artifact to App Center for Testing 
@@ -61,7 +61,7 @@ jobs:
         with: 
           releaseDirectory: src/app/build/outputs/apk/androidTest/debug
           signingKeyBase64: ${{secrets.SIGNING_KEY_BASE64}} 
-          alias: ${{secrets.ALIAS}} 
+          alias: ${{secrets.KEYSTORE_ALIAS}} 
           keyStorePassword: ${{secrets.KEYSTORE_PASSWORD}} 
           keyPassword: ${{secrets.KEY_PASSWORD}} 
       - name: Run UI Tests in App Center
