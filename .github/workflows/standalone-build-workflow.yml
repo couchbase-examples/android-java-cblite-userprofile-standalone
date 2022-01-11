@@ -2,7 +2,8 @@
 # name of workfow
 name: Build Standalone
 # Trigger
-on: 
+on:
+  workflow_dispatch:
   push:
     branches:
       - main
