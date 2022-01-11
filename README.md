@@ -5,6 +5,8 @@
 
 Full documentation can be found on the [Couchbase Developer Portal](https://developer.couchbase.com/tutorial-quickstart-android-java-basic/).
 
+[![Build Standalone](https://github.com/couchbase-examples/android-java-cblite-userprofile-standalone/actions/workflows/standalone-build-workflow.yml/badge.svg)](https://github.com/couchbase-examples/android-java-cblite-userprofile-standalone/actions/workflows/standalone-build-workflow.yml)
+
 ## Prerequisites
 To run this prebuilt project, you will need:
 
