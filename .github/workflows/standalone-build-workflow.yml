@@ -34,20 +34,20 @@ jobs:
       - name: Update Version of app
         uses: chkfung/android-version-actions@v1.1
         with:
-          gradlePath: ./standalone/app/build.gradle
+          gradlePath: ./src/app/build.gradle
           versionCode: ${{github.run_number}} 
           versionName: 1.0.${{github.run_number}} 
       - name: Build the app
         uses: eskatos/gradle-command-action@v1
         with: 
-          build-root-directory: ./standalone/
-          wrapper-directory: ./standalone/
+          build-root-directory: ./src/
+          wrapper-directory: ./src/
           arguments: assembleDebug assembleAndroidTest
       - name: Sign Artifact App
         id: sign_app 
         uses: r0adkll/sign-android-release@v1 
         with: 
-          releaseDirectory: standalone/app/build/outputs/apk/debug
+          releaseDirectory: src/app/build/outputs/apk/debug
           signingKeyBase64: ${{secrets.SIGNING_KEY_BASE64}} 
           alias: ${{secrets.ALIAS}} 
           keyStorePassword: ${{secrets.KEYSTORE_PASSWORD}} 
@@ -59,14 +59,14 @@ jobs:
         id: sign_app_uitest
         uses: r0adkll/sign-android-release@v1 
         with: 
-          releaseDirectory: standalone/app/build/outputs/apk/androidTest/debug
+          releaseDirectory: src/app/build/outputs/apk/androidTest/debug
           signingKeyBase64: ${{secrets.SIGNING_KEY_BASE64}} 
           alias: ${{secrets.ALIAS}} 
           keyStorePassword: ${{secrets.KEYSTORE_PASSWORD}} 
           keyPassword: ${{secrets.KEY_PASSWORD}} 
       - name: Run UI Tests in App Center
         run: | 
-          rm standalone/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
-          mv standalone/app/build/outputs/apk/androidTest/debug/app-debug-androidTest-signed.apk standalone/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
-          appcenter test run espresso --token "${{secrets.APPCENTER_API_KEY}}" --app "Couchbase-Inc./UserProfile-Standalone-Android" --devices cbc1464e --app-path "standalone/app/build/outputs/apk/debug/app-debug-signed.apk" --test-series "userprofile-standalone" --locale "en_US" --build-dir "standalone/app/build/outputs/apk/androidTest/debug" 
-          appcenter test run espresso --token "${{secrets.APPCENTER_API_KEY}}" --app "Couchbase-Inc./UserProfile-Standalone-Android" --devices 84a3abc4 --app-path "standalone/app/build/outputs/apk/debug/app-debug-signed.apk" --test-series "userprofile-standalone" --locale "en_US" --build-dir "standalone/app/build/outputs/apk/androidTest/debug" 
+          rm src/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+          mv src/app/build/outputs/apk/androidTest/debug/app-debug-androidTest-signed.apk src/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+          appcenter test run espresso --token "${{secrets.APPCENTER_API_KEY}}" --app "Couchbase-Inc./UserProfile-Standalone-Android" --devices cbc1464e --app-path "src/app/build/outputs/apk/debug/app-debug-signed.apk" --test-series "userprofile-standalone" --locale "en_US" --build-dir "src/app/build/outputs/apk/androidTest/debug" 
+          appcenter test run espresso --token "${{secrets.APPCENTER_API_KEY}}" --app "Couchbase-Inc./UserProfile-Standalone-Android" --devices 84a3abc4 --app-path "src/app/build/outputs/apk/debug/app-debug-signed.apk" --test-series "userprofile-standalone" --locale "en_US" --build-dir "src/app/build/outputs/apk/androidTest/debug" 
