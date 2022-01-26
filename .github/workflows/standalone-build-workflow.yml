@@ -4,7 +4,6 @@ name: Build Standalone
 # Trigger
 on:
   workflow_dispatch:
-  pull_request:
   push:
     branches:
       - main
