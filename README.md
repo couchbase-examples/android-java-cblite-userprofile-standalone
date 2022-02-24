@@ -25,7 +25,7 @@ To run this prebuilt project, you will need:
 dependencies {
     ...
 
-    implementation 'com.couchbase.lite:couchbase-lite-android-ee:3.0.0-beta02'
+    implementation 'com.couchbase.lite:couchbase-lite-android-ee:3.0.0'
 }
 ```
 
