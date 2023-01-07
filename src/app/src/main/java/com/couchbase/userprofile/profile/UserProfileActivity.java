@@ -14,6 +14,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.couchbase.lite.Blob;
@@ -26,7 +30,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserProfileActivity extends AppCompatActivity implements UserProfileContract.View {
+public class UserProfileActivity
+        extends AppCompatActivity
+        implements UserProfileContract.View {
 
     private UserProfileContract.UserActionsListener mActionListener;
 
@@ -34,6 +40,34 @@ public class UserProfileActivity extends AppCompatActivity implements UserProfil
     EditText emailInput;
     EditText addressInput;
     ImageView imageView;
+
+    ActivityResultLauncher<Intent> mainActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    int resultCode = result.getResultCode();
+                    Intent data = result.getData();
+                    switch (resultCode)
+                    {
+                        default:
+                        {
+                            if (data != null) {
+                                Uri selectedImage = data.getData();
+                                if (selectedImage != null) {
+                                    try {
+                                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                                        imageView.setImageBitmap(bitmap);
+                                    } catch (IOException ex) {
+                                        Log.i("SelectPhoto", ex.getMessage());
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +95,10 @@ public class UserProfileActivity extends AppCompatActivity implements UserProfil
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+        mainActivityResultLauncher.launch(Intent.createChooser(intent, "Select Picture"));
     }
 
+    /*
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -82,6 +117,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserProfil
             }
         }
     }
+     */
 
     public void onLogoutTapped(View view) {
         DatabaseManager.getSharedInstance().closeDatabaseForUser();
