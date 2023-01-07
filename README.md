@@ -11,10 +11,10 @@ Full documentation can be found on the [Couchbase Developer Portal](https://deve
 ## Prerequisites
 To run this prebuilt project, you will need:
 
-- [Android Studio Arctic Fox or above](https://developer.android.com/studio)
-- Android device or emulator running API level 22 or above 
-- Android SDK installed and setup (> v.29.0.0)
-- Android Build Tools (> v.29.0.0)
+- [Android Studio Chipmunk or above](https://developer.android.com/studio)
+- Android device or emulator running API level 23 or above 
+- Android SDK installed and setup (> v.32.0.0)
+- Android Build Tools (> v.32.0.0)
 - JDK 8 (now embedded into Android Studio 4+)
 
 ### Installing Couchbase Lite Framework
@@ -25,7 +25,7 @@ To run this prebuilt project, you will need:
 dependencies {
     ...
 
-    implementation 'com.couchbase.lite:couchbase-lite-android-ee:3.0.0'
+    implementation 'com.couchbase.lite:couchbase-lite-android-ee:3.0.5'
 }
 ```
 
