@@ -35,7 +35,7 @@ The sample app follows the [MVP pattern](https://en.wikipedia.org/wiki/Model%E2%
 
 ## Try it out
 
-* Open src/build.gradle using Android Studio.
+* **Open src/build.gradle using Android Studio.**
 * Build and run the project.
 * Verify that you see the login screen.
 
