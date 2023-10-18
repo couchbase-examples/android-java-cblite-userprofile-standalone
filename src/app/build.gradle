@@ -1,6 +1,10 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+}
 
 android {
+    namespace "com.couchbase.userprofile"
+
     compileSdkVersion 32
     defaultConfig {
         applicationId "com.couchbase.userprofile.standalone"
@@ -23,18 +27,15 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
-    buildToolsVersion '32.0.0'
-    ndkVersion '23.1.7779620'
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.test:core:1.5.0'
 
-    implementation 'com.couchbase.lite:couchbase-lite-android-ee:3.0.5'
+    implementation 'com.couchbase.lite:couchbase-lite-android-ee:3.1.2'
 
     testImplementation 'junit:junit:4.13.2'
 
