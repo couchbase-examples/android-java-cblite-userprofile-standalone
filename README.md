@@ -11,7 +11,7 @@ Full documentation can be found on the [Couchbase Developer Portal](https://deve
 ## Prerequisites
 To run this prebuilt project, you will need:
 
-- [Android Studio Chipmunk or above](https://developer.android.com/studio)
+- [Android Studio Giraffe or above](https://developer.android.com/studio)
 - Android device or emulator running API level 23 or above 
 - Android SDK installed and setup (> v.32.0.0)
 - Android Build Tools (> v.32.0.0)
