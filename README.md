@@ -15,17 +15,30 @@ To run this prebuilt project, you will need:
 - Android device or emulator running API level 23 or above 
 - Android SDK installed and setup (> v.32.0.0)
 - Android Build Tools (> v.32.0.0)
-- JDK 8 (now embedded into Android Studio 4+)
+- JDK 17 (now embedded into Android Studio)
 
 ### Installing Couchbase Lite Framework
 
-- src/build.gradle already contains the appropriate additions for downloading and utilizing the Android Couchbase Lite dependency module. However, in the future, to include Couchbase Lite support within an Android app add the following within the Module gradle file (src/app/build.gradle)
+- This project already contains the appropriate additions for downloading and utilizing the Android Couchbase Lite dependency module. However, in the future, to include Couchbase Lite support within an Android app add the following within the gradle settings file (src/gradle.settings)
+
+```
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        maven { url "https://mobile.maven.couchbase.com/maven2/dev/" } // << add this repository
+        google()
+        mavenCentral()
+    }
+}
+```
+
+- next, be sure you are using the most recent release of Couchbase Lite Mobile for Android.  In the module build file (src/app/build.gradle) check this line to verify that the version number is correct:
 
 ```
 dependencies {
     ...
 
-    implementation 'com.couchbase.lite:couchbase-lite-android-ee:3.0.5'
+    implementation 'com.couchbase.lite:couchbase-lite-android-ee:3.1.2'
 }
 ```
 
