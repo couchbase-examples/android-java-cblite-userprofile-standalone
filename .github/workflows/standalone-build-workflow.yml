@@ -4,7 +4,7 @@ name: Build Standalone
 # Trigger
 on:
   schedule:
-    - cron: '12,0,*,*,5'
+    - cron: '0 0 * * 5'
   workflow_dispatch:
   push:
     branches:
