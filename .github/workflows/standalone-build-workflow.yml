@@ -47,7 +47,7 @@ jobs:
       - name: Build gradle project
         run: ./gradlew build
         working-directory: ./src
-      - name: Build with Gradle
+      - name: Build APK Gradle
         uses: gradle/gradle-build-action@v3
         with:
           arguments: assembleDebug assembleAndroidTest
