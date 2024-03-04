@@ -5,6 +5,7 @@ plugins {
 android {
     namespace "com.couchbase.userprofile"
 
+    compileSdk 34
     defaultConfig {
         applicationId "com.couchbase.userprofile.standalone"
         minSdkVersion 22
