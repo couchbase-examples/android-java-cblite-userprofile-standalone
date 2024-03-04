@@ -61,9 +61,8 @@ jobs:
           alias: ${{secrets.KEYSTORE_ALIAS}} 
           keyStorePassword: ${{secrets.KEYSTORE_PASSWORD}} 
           keyPassword: ${{secrets.KEY_PASSWORD}} 
-          env:
-            # override default build-tools version (33.0.0) -- optional
-            BUILD_TOOLS_VERSION: "34.0.0"
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
       - name: Upload artifact to App Center for Testing 
         run: | 
           appcenter distribute release --token "${{secrets.APPCENTER_API_KEY}}"  --app "Couchbase-Inc./UserProfile-Standalone-Android" --group "Collaborators" --file "${{steps.sign_app.outputs.signedReleaseFile}}" --silent --debug --release-notes "${{ github.event.head_commit.message }}"
@@ -76,6 +75,8 @@ jobs:
           alias: ${{secrets.KEYSTORE_ALIAS}} 
           keyStorePassword: ${{secrets.KEYSTORE_PASSWORD}} 
           keyPassword: ${{secrets.KEY_PASSWORD}} 
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
       - name: Run UI Tests in App Center
         run: | 
           rm src/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
