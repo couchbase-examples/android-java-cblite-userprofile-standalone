@@ -33,18 +33,24 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '17'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+      - name: Change wrapper permissions
+        run: chmod +x ./src/gradlew
       - name: Update Version of app
         uses: chkfung/android-version-actions@v1.1
         with:
           gradlePath: ./src/app/build.gradle
           versionCode: ${{github.run_number}} 
           versionName: 1.0.${{github.run_number}} 
-      - name: Build the app
-        uses: eskatos/gradle-command-action@v1
-        with: 
-          build-root-directory: ./src/
-          wrapper-directory: ./src/
+        # Run Build Project
+      - name: Build gradle project
+        run: ./src/gradlew build
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v3
+        with:
           arguments: assembleDebug assembleAndroidTest
+          build-root-directory: ./src/
       - name: Sign Artifact App
         id: sign_app 
         uses: r0adkll/sign-android-release@v1 
