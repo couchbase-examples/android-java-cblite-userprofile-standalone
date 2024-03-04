@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [18.x]
     steps:
       - name: Update using apt
         run: | 
@@ -45,7 +45,8 @@ jobs:
           versionName: 1.0.${{github.run_number}} 
         # Run Build Project
       - name: Build gradle project
-        run: ./src/gradlew build
+        run: ./gradlew build
+        working-directory: ./src
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v3
         with:
